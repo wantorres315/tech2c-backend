@@ -1,0 +1,49 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: tech2c-backend-app
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - tech2c
+
+  nginx:
+    image: nginx:latest
+    container_name: tech2c-backend-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - tech2c
+
+  mysql:
+    image: mysql:8.0
+    container_name: tech2c-backend-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tech2c
+      MYSQL_USER: tech2c
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - tech2c
+
+volumes:
+  mysql_data:
+
+
+networks:
+  tech2c:
+    driver: bridge

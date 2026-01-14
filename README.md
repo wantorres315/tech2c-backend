@@ -1,4 +1,4 @@
-# Tech2C Backend — Laravel 11 + Docker
+# Tech2C Backend — Laravel 12 + Docker
 
 # Tech2C Backend (Laravel API)
 
